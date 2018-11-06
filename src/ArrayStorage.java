@@ -1,9 +1,36 @@
 /**
- * Array based storage for Resumes
+ * Реализуйте и протестируйте ArrayStorage.update(Resume resume)
+ * Сделайте проверки:
+ * в update/delete/get - резюме есть в storage?
+ * в save- резюме нет в storage?
+ * сделайте в save проверку на переполнение
+ * выведите соответствующие предупреждения для всех, указанных выше проверок - System.out.println("Resume ...")
+ * Избавьтесь от дублирования в коде ArrayStorage
+ * Посмотрите на методы класса java.util.Arrays.
+ * Некоторые из них помогут упростить реализацию ваших методов clear() и getAll()
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
     int count = 0;
+
+    Integer check(String uuid) {
+
+        for (int i = 0; i <= count - 1; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                return i;
+            }
+        }
+
+        return null;
+    }
+
+    void update(Resume resume) {
+
+        if (check(resume.uuid) != null) {
+            System.out.println("Update possible");
+        }
+        System.out.println("Error");
+    }
 
     void clear() {
         for (int i = 0; i <= storage.length - 1; i++) {
@@ -13,29 +40,38 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-
-        storage[count] = r;
-        count++;
+        if (check(r.uuid) != null) {
+            System.out.println("Error. Resume is on base");
+        } else {
+            if (count < storage.length) {
+                storage[count] = r;
+                count++;
+            } else {
+                System.out.println("Error. Base is full");
+            }
+        }
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i <= count - 1; i++) {
-            if (storage[i].uuid.equals(uuid)) {
-                return storage[i];
-            }
+        Integer r = check(uuid);
+        if (r != null) {
+            return storage[check(uuid)];
         }
+        System.out.println("Error. Uuid didn't found");
         return null;
+
     }
 
     void delete(String uuid) {
-
-        for (int i = 0; i <= count - 1; i++) {
-            if (storage[i].uuid == uuid) {
-                storage[i] = storage[count - 1];
-                storage[count - 1] = null;
-                count--;
-            }
+        Integer r = check(uuid);
+        if (r != null) {
+            storage[r] = storage[count - 1];
+            storage[count - 1] = null;
+            count--;
+        } else {
+            System.out.println("Error. Unknown uuid");
         }
+
     }
 
     /**

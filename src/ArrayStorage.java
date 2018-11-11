@@ -24,7 +24,7 @@ public class ArrayStorage {
         return null;
     }
 
-    void update(Resume resume) {
+    private void update(Resume resume) {
 
         if (check(resume.uuid) != null) {
             System.out.println("Update possible");
@@ -53,9 +53,10 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        Integer r = check(uuid);
-        if (r != null) {
-            return storage[check(uuid)];
+
+        Integer check = check(uuid);
+        if (check != null) {
+            return storage[check];
         }
         System.out.println("Error. Uuid didn't found");
         return null;
